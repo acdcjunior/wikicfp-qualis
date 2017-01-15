@@ -9,3 +9,5 @@ if (!$link) {
 if (! mysql_select_db('qualisc9') ) {
     die ('Can\'t use qualisc9 : ' . mysql_error());
 }
+
+?>
