@@ -1,32 +1,58 @@
 <?php
 
-include('crud_cabecalho.php');
+include('../cabecalho.php');
 
-if (isset($_GET['id']) ) { 
-$id = (int) $_GET['id']; 
-if (isset($_POST['submitted'])) { 
-foreach($_POST AS $key => $value) { $_POST[$key] = mysql_real_escape_string($value); } 
-$sql = "UPDATE `qualis` SET  `nome_evento` =  '{$_POST['nome_evento']}' ,  `qualis` =  '{$_POST['qualis']}' ,  `fonte` =  '{$_POST['fonte']}'   WHERE `id` = '$id' "; 
-mysql_query($sql) or die(mysql_error()); 
-echo (mysql_affected_rows()) ? "Linha editada.<br />" : "Nada Mudou. <br />"; 
-echo "<a href='qualis_list.php'>Voltar para listagem</a>"; 
-} 
-$row = mysql_fetch_array ( mysql_query("SELECT * FROM `qualis` WHERE `id` = '$id' ")); 
+if (isset($_GET['id']) ) {
+  $id = (int) $_GET['id']; 
+  if (isset($_POST['submitted'])) { 
+    foreach($_POST AS $key => $value) { $_POST[$key] = mysql_real_escape_string($value); } 
+    
+    $sql = "
+    UPDATE `qualis` SET
+      `issn`           = '{$_POST['issn']}',
+      `sigla`          = '{$_POST['sigla']}',
+      `titulo`         = '{$_POST['titulo']}',
+      `qualis`         = '{$_POST['qualis']}',
+      `area_avaliacao` = '{$_POST['area_avaliacao']}',
+      `fonte`          = '{$_POST['fonte']}'
+    WHERE `id` = '$id' 
+    "; 
+    mysql_query($sql) or die(mysql_error()); 
+    
+    echo "<br>";
+    if (mysql_affected_rows()) {
+      echo "<h2>Linha editada.</h2>";
+    } else { 
+      echo "<h2>Nada Mudou.</h2>"; 
+    }
+    echo "<a href='qualis_list.php'>Voltar para listagem</a>"; 
+    return;
+  } 
+  
+  $row = mysql_fetch_array ( mysql_query("SELECT * FROM `qualis` WHERE `id` = '$id' ")); 
 ?>
 
 <div class="container">
     <div class="row">
-        <h1>Editar Classificação Qualis de Evento</h1>
+        <h1>Editar Classificação Qualis</h1>
     </div>
     <div class="row">
         <form action='' method='POST' class="col s12">
+          
           <div class="row">
             <div class="input-field col s12">
-              <input type="text" class="validate" id="nome_evento" name='nome_evento' required value='<?= stripslashes($row['nome_evento']) ?>'><label for="nome_evento">Sigla do Evento (Ex.: BRCOM, IEEE-ICDDM, etc.)</label>
+              <input type="text" class="validate" id="titulo" name='titulo' required value='<?= stripslashes($row['titulo']) ?>'><label for="titulo">Título (Ex.: IEEE TRANSACTIONS ON SOFTWARE ENGINEERING)</label>
             </div>
           </div>
+
           <div class="row">
-              <label>Classificação Qualis do Evento</label>
+            <div class="input-field col s12">
+              <input type="text" class="validate" id="sigla" name='sigla' value='<?= stripslashes($row['sigla']) ?>'><label for="sigla">Sigla do Evento (Ex.: BRCOM, IEEE-ICDDM, etc.)</label>
+            </div>
+          </div>
+          
+          <div class="row">
+              <label>Classificação (Estrato) Qualis do Evento</label>
               <select id="qualis" name='qualis' required class="browser-default">
                 <option value="" disabled selected>Selecione a classificação Qualis deste evento</option>
                 <option <?=($row['qualis'] == 'C')?'selected':''?>>C
@@ -39,16 +65,31 @@ $row = mysql_fetch_array ( mysql_query("SELECT * FROM `qualis` WHERE `id` = '$id
                 <option <?=($row['qualis'] == 'A1')?'selected':''?>>A1
               </select>
           </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" class="validate" id="issn" name='issn' value='<?= stripslashes($row['issn']) ?>'><label for="issn">ISSN (Ex.: 0098-5589)</label>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" class="validate" id="area_avaliacao" name='area_avaliacao' value='<?= stripslashes($row['area_avaliacao']) ?>'><label for="area_avaliacao">Área de Avaliação (Ex.: CIÊNCIA DA COMPUTAÇÃO)</label>
+            </div>
+          </div>
+          
           <div class="row">
             <div class="input-field col s12">
               <input type="text" class="validate" id="fonte" name='fonte' required value='<?= stripslashes($row['fonte']) ?>'><label for="fonte">Onde esse valor de Qualis foi obtido? (Ex.: site oficial, google, outros.)</label>
             </div>
           </div>
+          
           <div class="row">
             <input type='hidden' value='1' name='submitted' /> 
-            <button class="btn waves-effect waves-light" type="submit" name="action">Edita Linha
+            <button class="btn waves-effect waves-light" type="submit" name="action">Editar
               <i class="material-icons right">send</i>
             </button>
+            <a class="btn waves-effect waves-light grey lighten-5" style='color: black' href='qualis_list.php'><i class="material-icons right">undo</i>Voltar para listagem</a>
           </div>
         </form>
     </div>

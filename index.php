@@ -5,6 +5,18 @@ include('qualis.php');
 $url = 'http://www.wikicfp.com/cfp/call?conference=data%20mining';
 $html = file_get_contents($url);
 
+function criarAtributo($dom, $pai, $nomeAtributo, $valorAtributo) {
+    $atributo = $dom->createAttribute($nomeAtributo);
+    $atributo->value = $valorAtributo;
+    $pai->appendChild($atributo);
+}
+function criarTooltip($dom, $elemento, $texto) {
+    criarAtributo($dom, $elemento, 'class', 'tooltipped');
+    criarAtributo($dom, $elemento, 'data-position', 'bottom');
+    criarAtributo($dom, $elemento, 'data-delay', '10');
+    criarAtributo($dom, $elemento, 'data-tooltip', $texto);
+}
+
 $dom = new DOMDocument();
 
 libxml_use_internal_errors(true);
@@ -16,7 +28,13 @@ $tabelaCallForPapers = $xpath->query("//table[./tr/td[contains(text(), 'Event')]
 
 // add qualis header
 $trHeader = $tabelaCallForPapers->childNodes->item(0);
-$tdQualisHeader = $dom->createElement('td', 'Qualis'); 
+
+$tdQualisHeader = $dom->createElement('td', 'Qualis');
+criarTooltip($dom, $tdQualisHeader, 'Passe o mouse sobre o qualis para entender como ele foi calculado.');
+$icone = $dom->createElement('i', 'info_outline'); 
+criarAtributo($dom, $icone, 'class', 'material-icons');
+$tdQualisHeader->appendChild($icone);
+
 $trHeader->insertBefore($tdQualisHeader, $trHeader->childNodes->item(1));
 
 foreach ($tabelaCallForPapers->childNodes as $tr) {
@@ -34,10 +52,12 @@ foreach ($tabelaCallForPapers->childNodes as $tr) {
         
         $qualisDoEvento = qualis($tdSiglaConfEncontrada->item(0)->textContent);
         
-        $tdQualis = $dom->createElement('td', $qualisDoEvento); 
-        $tdQualisRowspan = $dom->createAttribute('rowspan');
-        $tdQualisRowspan->value = '2';
-        $tdQualis->appendChild($tdQualisRowspan);
+        $tdQualis = $dom->createElement('td', $qualisDoEvento->qualis); 
+        $tdQualisAtributoRowspan = $dom->createAttribute('rowspan');
+        $tdQualisAtributoRowspan->value = '2';
+        $tdQualis->appendChild($tdQualisAtributoRowspan);
+        
+        criarTooltip($dom, $tdQualis, $qualisDoEvento->razao);
 
         // echo "\n-".$dom->saveXML($tdNomeConf)."\n";
         // echo "--".$dom->saveXML($tdNomeConf->nextSibling)."\n\n\n";
@@ -45,18 +65,26 @@ foreach ($tabelaCallForPapers->childNodes as $tr) {
     }
 }
 
+include('cabecalho.php');
 
-echo "<html>
-<head>
-<base href='$url'>
-</head>
-<body>
-URL Referência: <a href='$url'>$url<a><br>
-<button type='button' onclick='javascript:location.href = window.location + \"crud\"; return false;'>Clique aqui para editar a base de classificações qualis</button>
+echo "<hr>
+URL Referência: <a href='$url'>$url</a><br>
 <hr>
-<h1 style='color: red'>Atenção: As classificações qualis abaixo não estão corretas, são dados de testes, apenas.</h1>
-<hr>";
+<style>
+    table, tr, td {
+        border: 1px solid white;
+        border-collapse: collapse;
+        padding: 2px 10px 2px 10px;
+    }
+    table > tbody > tr:nth-child(1) > td {
+        font-size: 130%;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>";
 
-echo $dom->saveXML($tabelaCallForPapers);
+$tableHtmlAsString = $dom->saveXML($tabelaCallForPapers);
+
+echo str_replace('src="/cfp/images/new.gif"', "src='http://www.wikicfp.com/cfp/images/new.gif'", $tableHtmlAsString);
 
 echo "<hr id=fim></body></html><!-- fim! -->";
