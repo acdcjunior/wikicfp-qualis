@@ -114,5 +114,12 @@ if (!isset($pagina) || $pagina < 1) {
     <br>
 <a class="btn-floating btn-large waves-effect waves-light tooltipped blue" data-position='bottom' data-delay='10' data-tooltip='Incluir nova classificação' href="qualis_new.php"><i class="material-icons">add</i></a>
 
+<?php
 
-<?php include('crud_rodape.php'); ?>
+if (isset($_GET['showdel'])) {
+    ?>
+    <a href='../calculo/sigla.php'>Abrir pagina de sigla</a>
+    <?php
+}
+
+include('crud_rodape.php');
