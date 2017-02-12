@@ -1,5 +1,6 @@
 <?php
 
+include('cabecalho.php');
 include('qualis.php');
 
 $url = 'http://www.wikicfp.com/cfp/call?conference=data%20mining';
@@ -65,7 +66,6 @@ foreach ($tabelaCallForPapers->childNodes as $tr) {
     }
 }
 
-include('cabecalho.php');
 
 echo "<hr>
 URL Referência: <a href='$url'>$url</a><br>

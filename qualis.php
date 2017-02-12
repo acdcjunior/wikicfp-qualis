@@ -1,7 +1,5 @@
 <?php
 
-include('database.php');
-
 function qualis($nomeEventoComAno) {
     $nomeEventoSemAno = removerAno($nomeEventoComAno);
     
