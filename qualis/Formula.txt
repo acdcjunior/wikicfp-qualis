@@ -1,0 +1,1 @@
+="INSERT INTO `qualis` (`issn`, `titulo`, `area_avaliacao`, `qualis`, `fonte`) VALUES ('"&A2&"', '"&SUBSTITUIR(B2;"'";"''")&"', '"&ARRUMAR(C2)&"', '"&D2&"', 'Carregado de classificacoesPublicadas_Preiodicos2015_TodasAreasAvaliacao1482323195661.xls');"
