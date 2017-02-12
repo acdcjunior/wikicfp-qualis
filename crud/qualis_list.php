@@ -4,7 +4,7 @@ include('../cabecalho.php');
 
 ?>
 
-<h1>Classificações Qualis Cadastradas</h1>
+<h3>Classificações Qualis Cadastradas</h3>
 <table class="bordered striped centered responsive-table">
     <thead>
     <tr>
