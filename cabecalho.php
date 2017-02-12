@@ -33,7 +33,7 @@
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">&nbsp; WikiCFP/Qualis</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li <?= strpos($_SERVER["REQUEST_URI"], 'crud') != false ? "class='active'" : "" ?>><a href="/crud">Editar Classificações Cadastradas</a></li>
+        <li <?= strpos($_SERVER["REQUEST_URI"], 'crud') != false ? "class='active'" : "" ?>><a href="/crud">Editar Classificações</a></li>
         <li <?= strpos($_SERVER["REQUEST_URI"], 'crud') != false ? "" : "class='active'" ?>><a href="/">Deadlines</a></li>
       </ul>
     </div>

@@ -2,6 +2,20 @@
 
 include('../cabecalho.php');
 
+$start = 0;
+$limit = 10;
+
+if (isset($_GET['pagina'])) {
+    $pagina = (int) $_GET['pagina'];
+    if ($pagina == 0) {
+        $pagina = 1;
+    }
+    $start = ($pagina-1)*$limit;
+}
+if (!isset($pagina) || $pagina < 1) {
+    $pagina = 1;
+}
+
 ?>
 
 <h3>Classificações Qualis Cadastradas</h3>
@@ -37,7 +51,7 @@ include('../cabecalho.php');
         return " class='tooltipped' data-delay='10' data-tooltip='".nl2br($valorCampo)."'>" . (strlen($valorCampo) > $tamanhoMax ? substr($valorCampo, 0, $tamanhoMax)."..." : $valorCampo);
     }
 
-    $query = $db->query("SELECT * FROM `qualis`");
+    $query = $db->query("SELECT * FROM `qualis` order by titulo, sigla LIMIT $start, $limit");
     while($row = $query->fetch_array(MYSQLI_ASSOC)) { 
         foreach($row AS $key => $value) { $row[$key] = stripslashes($value); } 
         echo "<tr>";  
@@ -51,8 +65,15 @@ include('../cabecalho.php');
         ?>
         <a class="btn-floating btn waves-effect waves-light tooltipped" data-position='bottom' data-delay='10' data-tooltip='Editar classificação' href="qualis_edit.php?id=<?=$row['id']?> "><i class="material-icons">edit</i></a>
         <?php
-//        <a class="btn-floating btn waves-effect waves-light tooltipped deep-orange lighten-5" data-position='bottom' data-delay='10' data-tooltip='Apagar classificação' href="qualis_delete.php?id=<?=$row['id']
-// ? >" onclick="if (!confirm('Tem certeza que deseja apagar esta linha?')) return false;"><i class="material-icons">delete</i></a>
+        if (isset($_GET['showdel'])) {
+            ?>
+            <a class="btn-floating btn waves-effect waves-light tooltipped deep-orange lighten-5"
+               data-position='bottom' data-delay='10' data-tooltip='Apagar classificação'
+               href="qualis_delete_x.php?id=<?=$row['id']?>" onclick="if (!confirm('Tem certeza que deseja apagar esta linha?')) return false;">
+                <i class="material-icons">delete</i>
+            </a>
+            <?php
+        }
         echo "</td> "; 
         echo "</tr>"; 
     }
@@ -60,6 +81,37 @@ include('../cabecalho.php');
     </tbody>
 </table>
 <br>
+<?php
+    $rows = $db->query("SELECT * FROM `qualis`")->num_rows;
+    $total = ceil($rows/$limit);
+?>
+    <div class="container">
+        <div class="row">
+            <div class="col s6">
+                <ul class="pagination">
+                    <?php
+                        if ($pagina > 1) {
+                            echo "<li class='waves-effect'><a href='?pagina=".($pagina-1)."'><i class='material-icons'>chevron_left</i></a></li>";
+                        } else {
+                            echo "<li class='disabled'><a href='#!'><i class='material-icons'>chevron_left</i></a></li>";
+                        }
+                        echo "<li class='active'><a href='#!'>$pagina</a></li>";
+                        
+                        if ($pagina != $total) {
+                            echo "<li class='waves-effect'><a href='?pagina=".($pagina+1)."'><i class='material-icons'>chevron_right</i></a></li>";
+                        } else {
+                            echo "<li class='disabled'><a href='#!'><i class='material-icons'>chevron_right</i></a></li>";
+                        }
+                    ?>
+                </ul>
+            </div>
+            <div class="col s6" style="padding-top: 20px">
+                Total de <?= $rows ?> registros na base.
+            </div>
+        </div>
+    </div>
+    
+    <br>
 <a class="btn-floating btn-large waves-effect waves-light tooltipped blue" data-position='bottom' data-delay='10' data-tooltip='Incluir nova classificação' href="qualis_new.php"><i class="material-icons">add</i></a>
 
 

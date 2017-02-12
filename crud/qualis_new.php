@@ -3,7 +3,7 @@
 include('../cabecalho.php');
 
 if (isset($_POST['submitted'])) { 
-  foreach($_POST AS $key => $value) { $_POST[$key] = mysql_real_escape_string($value); } 
+  foreach($_POST AS $key => $value) { $_POST[$key] = $db->real_escape_string($value); } 
   
   $sql = "
     INSERT INTO `qualis`
@@ -26,10 +26,16 @@ if (isset($_POST['submitted'])) {
     )
     "; 
 
-  mysql_query($sql) or die(mysql_error()); 
+  $db->query($sql); 
   
-  echo "<h2>Linha adicionada.</h2>"; 
-  echo "<a href='qualis_list.php'>Voltar para listagem</a>"; 
+  if ($db->query($sql) === TRUE) {
+    echo "<h2>Linha adicionada com sucesso.</h2>"; 
+    echo "<a href='qualis_list.php'>Voltar para listagem.</a>"; 
+  } else {
+    echo "Erro: " . $sql . "<br>" . $db->error;
+  }
+  
+
   return;
 } 
 ?>
