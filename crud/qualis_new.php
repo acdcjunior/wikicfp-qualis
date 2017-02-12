@@ -26,8 +26,6 @@ if (isset($_POST['submitted'])) {
     )
     "; 
 
-  $db->query($sql); 
-  
   if ($db->query($sql) === TRUE) {
     echo "<h2>Linha adicionada com sucesso.</h2>"; 
     echo "<a href='qualis_list.php'>Voltar para listagem.</a>"; 
@@ -45,7 +43,7 @@ if (isset($_POST['submitted'])) {
         <h1>Nova Classificação Qualis</h1>
     </div>
     <div class="row">
-<form action='' method='POST' class="col s12">
+<form action='' method='POST' class="col s12" onsubmit="btnInserir.disabled = true">
           
           <div class="row">
             <div class="input-field col s12">
@@ -94,7 +92,7 @@ if (isset($_POST['submitted'])) {
           
           <div class="row">
             <input type='hidden' value='1' name='submitted' /> 
-            <button class="btn waves-effect waves-light" type="submit" name="action">Inserir
+            <button class="btn waves-effect waves-light" type="submit" name="action" id="btnInserir">Inserir
               <i class="material-icons right">send</i>
             </button>
             <a class="btn waves-effect waves-light grey lighten-5" style='color: black' href='qualis_list.php'><i class="material-icons right">undo</i>Voltar para listagem</a>
