@@ -41,18 +41,18 @@ function resultado($qualis, $razao) {
 }
 
 function getBySiglaExatamente($sigla) {
-    return goSQL("SELECT `qualis` FROM `qualis` WHERE `sigla` = '".mysql_real_escape_string($sigla)."'");
+    global $db;
+    return goSQL("SELECT `qualis` FROM `qualis` WHERE `sigla` = '".$db->real_escape_string($sigla)."'");
 }
 
 function goSQL($sql) {
+    global $db;
     $data = array();
     
-    $result = mysql_query($sql) or trigger_error(mysql_error());
-    
-    if ($result) {
-        while($row = mysql_fetch_assoc($result)) {
-            $data[] = $row;
-        }
+    $query = $db->query($sql);
+
+    while($row = $query->fetch_array(MYSQLI_ASSOC)) {
+        $data[] = $row;
     }
     return $data;
 }

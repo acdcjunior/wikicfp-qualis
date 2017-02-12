@@ -3,7 +3,7 @@
 include('crud_cabecalho.php');
 
 $id = (int) $_GET['id']; 
-mysql_query("DELETE FROM `qualis` WHERE `id` = '$id' ") ; 
+$db->query("DELETE FROM `qualis` WHERE `id` = '$id' "); 
 echo (mysql_affected_rows()) ? "Linha apagada.<br /> " : "Nada apagado.<br /> "; 
 
 ?> 

@@ -5,7 +5,7 @@ include('../cabecalho.php');
 if (isset($_GET['id']) ) {
   $id = (int) $_GET['id']; 
   if (isset($_POST['submitted'])) { 
-    foreach($_POST AS $key => $value) { $_POST[$key] = mysql_real_escape_string($value); } 
+    foreach($_POST AS $key => $value) { $_POST[$key] = $db->real_escape_string($value); } 
     
     $sql = "
     UPDATE `qualis` SET
@@ -17,10 +17,10 @@ if (isset($_GET['id']) ) {
       `fonte`          = '{$_POST['fonte']}'
     WHERE `id` = '$id' 
     "; 
-    mysql_query($sql) or die(mysql_error()); 
+    $db->query($sql); 
     
     echo "<br>";
-    if (mysql_affected_rows()) {
+    if ($db->affected_rows) {
       echo "<h2>Linha editada.</h2>";
     } else { 
       echo "<h2>Nada Mudou.</h2>"; 
@@ -29,7 +29,7 @@ if (isset($_GET['id']) ) {
     return;
   } 
   
-  $row = mysql_fetch_array ( mysql_query("SELECT * FROM `qualis` WHERE `id` = '$id' ")); 
+  $row = $db->query("SELECT * FROM `qualis` WHERE `id` = '$id' ")->fetch_array(); 
 ?>
 
 <div class="container">
