@@ -1,6 +1,21 @@
 <?php
 
-function qualis($nomeEventoComAno) {
+/*
+    https://ppca-2016-2.slack.com/archives/mineracao/p1484746495000002
+
+    ATENCAO: O ALGORITMO AINDA NAO FOI IMPLEMENTADO, ESTA SO COMECANDO
+    
+    Sugestao inicial:
+    - Comparar pela sigla, se achar só um, retorna essa mesmo
+    - Se retornar mais de 1, ver se titulo bate
+        - Se bater só com um, retorna
+        - Se não bater com nenhum calcular edit distance e selecionar o de menor distancia
+        
+    IMPORTANTE: O campo sigla a ser usado eh o campo `SIGLA_EFETIVA`, que eh preenchido
+    com um valor sintetico (gerado), mesmo quando o evento nao teve sigla cadastrada.
+
+*/
+function calcularClassificacaoQualis($nomeEventoComAno) {
     $nomeEventoSemAno = removerAno($nomeEventoComAno);
     
     $bySigla = getBySiglaExatamente($nomeEventoSemAno);
@@ -16,18 +31,7 @@ function qualis($nomeEventoComAno) {
     }
 }
 
-/*
-https://ppca-2016-2.slack.com/archives/mineracao/p1484746495000002
 
-uma alternativa é comparar pela sigla, se achar só um, retorna essa mesmo
-se retornar mais de 1, veja se o nome completo bate
-se bater só com um, fechou
-se não bater com nenhum calcule a distância de levenshtein e selecione o q tiver menor distância ou maior semelhança
-acho q resolve, não?
-agora, se tu for do Wiki pra lista de qualis, vai ter um monte de caso q não vai ter qualis associado
-se for da lista de qualis pra Wiki, aí acho q vai ser mais simples e vai achar tudo
-
-*/
 
 
 function removerAno($nome) {
@@ -42,7 +46,7 @@ function resultado($qualis, $razao) {
 
 function getBySiglaExatamente($sigla) {
     global $db;
-    return goSQL("SELECT `qualis` FROM `qualis` WHERE `sigla` = '".$db->real_escape_string($sigla)."'");
+    return goSQL("SELECT `qualis` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."'");
 }
 
 function goSQL($sql) {

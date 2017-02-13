@@ -33,7 +33,7 @@ if (isset($_GET['id']) ) {
     } else { 
       echo "<h2>Nada Mudou.</h2>"; 
     }
-    echo "<a href='qualis_list.php'>Voltar para listagem</a>"; 
+    echo "<a href='qualis_list.php'>Voltar para listagem.</a>"; 
     return;
   } 
   

@@ -1,7 +1,7 @@
 <?php
 
 include('cabecalho.php');
-include('calculo/qualis.php');
+include('calculo/calcularClassificacaoQualis.php');
 
 
 function criarAtributo($dom, $pai, $nomeAtributo, $valorAtributo) {
@@ -51,7 +51,7 @@ function obterWiki($url) {
             $tdNomeConfEncontrada = $xpath->query('td[@rowspan=2]/following-sibling::td', $tr);
             $tdNomeConf = $tdNomeConfEncontrada->item(0);
             
-            $qualisDoEvento = qualis($tdSiglaConfEncontrada->item(0)->textContent);
+            $qualisDoEvento = calcularClassificacaoQualis($tdSiglaConfEncontrada->item(0)->textContent);
             
             $tdQualis = $dom->createElement('td', $qualisDoEvento->qualis); 
             $tdQualisAtributoRowspan = $dom->createAttribute('rowspan');
@@ -97,6 +97,8 @@ function obterWiki($url) {
 <?= obterWiki('http://www.wikicfp.com/cfp/call?conference=data%20mining&page=2') ?>
 
 <hr id=fim>
-Código fonte: <a href="https://github.com/acdcjunior/wikicfp-qualis">https://github.com/acdcjunior/wikicfp-qualis</a>
+- Código fonte completo: <a href="https://github.com/acdcjunior/wikicfp-qualis">https://github.com/acdcjunior/wikicfp-qualis</a><br>
+- Função que determina o Qualis com base no título/sigla do evento vs. o que está no banco: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php">https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php</a><br>
+- Função de geração de siglas sintéticas para eventos carregados sem siglas: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularSiglaSintetica.php">https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularSiglaSintetica.php</a><br>
 </body>
 </html>
