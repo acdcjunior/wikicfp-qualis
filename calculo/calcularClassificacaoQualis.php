@@ -25,7 +25,7 @@ function calcularClassificacaoQualis($nomeEventoComAno) {
         return resultado($bySigla[0]['qualis'], "Apenas um evento foi encontrado para essa sigla.");
     }
     if ($numeroDeEventosEncontradosComAMesmaSigla > 1) {
-        return resultado($bySigla[0]['qualis']+"*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." foram encontrados para essa sigla. Retornando o primeiro.");
+        return resultado("*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." foram encontrados para essa sigla.");
     } else {
         return resultado("-", "Nenhuma classificacao encontrada para essa sigla.");
     }
