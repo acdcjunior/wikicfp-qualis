@@ -1,7 +1,7 @@
 <?php
 
 include('cabecalho.php');
-include('qualis.php');
+include('calculo/qualis.php');
 
 
 function criarAtributo($dom, $pai, $nomeAtributo, $valorAtributo) {

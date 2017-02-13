@@ -18,5 +18,5 @@
         foreach ($words as $w) {
           $sigla .= $w[0];
         }
-        return "DUMMY $sigla";
+        return $sigla;
     }

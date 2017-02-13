@@ -55,8 +55,16 @@ if (!isset($pagina) || $pagina < 1) {
     while($row = $query->fetch_array(MYSQLI_ASSOC)) { 
         foreach($row AS $key => $value) { $row[$key] = stripslashes($value); } 
         echo "<tr>";  
-        echo "<td valign='top' class='tooltipped' data-delay='1000' data-tooltip='Id desta linha no banco: ".$row['id']."'>" . nl2br( $row['titulo']) . "</td>";  
-        echo "<td valign='top' " . nulavel("sigla", "a", $row['sigla']) . "</td>";  
+        echo "<td valign='top' class='tooltipped' data-delay='1000' data-tooltip='Id desta linha no banco: ".$row['id']."'>" . nl2br( $row['titulo']) . "</td>";
+        
+        if (empty(trim($row['sigla']))) {
+            echo "<td class='tooltipped' data-position='bottom' data-delay='10' data-tooltip='Nenhuma sigla foi fornecida via cadastro. A sigla exibida foi calculada automaticamente com base no título.'>".
+                 $row['sigla_efetiva']."<i class='material-icons' style='margin-top: 10px'>local_offer</i>
+                </td>";  
+        } else {
+            echo "<td valign='top' " . nulavel("sigla", "a", $row['sigla']) . "</td>";  
+        }
+        
         echo "<td valign='top'>" . nl2br( $row['qualis']) . "</td>";
         echo "<td valign='top' " . nulavel("número ISSN", "o", $row['issn']) . "</td>";
         echo "<td valign='top' " . nulavel("Área de Avaliação", "a", $row['area_avaliacao']) . "</td>";

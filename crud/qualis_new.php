@@ -1,15 +1,23 @@
 <?php
 
 include('../cabecalho.php');
+include('../calculo/calcularSiglaSintetica.php');
 
 if (isset($_POST['submitted'])) { 
   foreach($_POST AS $key => $value) { $_POST[$key] = $db->real_escape_string($value); } 
+  
+  $titulo = "{$_POST['titulo']}";
+  $siglaEfetiva = trim("{$_POST['sigla']}");
+  if (empty($siglaEfetiva)) {
+    $siglaEfetiva = calcularSiglaSintetica($titulo);
+  }
   
   $sql = "
     INSERT INTO `qualis`
     (
       `issn`,
       `sigla`,
+      `sigla_efetiva`,
       `titulo`,
       `qualis`,
       `area_avaliacao`,
@@ -19,7 +27,8 @@ if (isset($_POST['submitted'])) {
     (
       '{$_POST['issn']}',
       '{$_POST['sigla']}',
-      '{$_POST['titulo']}',
+      '$siglaEfetiva',
+      '$titulo',
       '{$_POST['qualis']}',
       '{$_POST['area_avaliacao']}',
       '{$_POST['fonte']}'
