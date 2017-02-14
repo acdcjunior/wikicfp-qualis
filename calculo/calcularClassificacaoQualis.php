@@ -27,6 +27,7 @@ function calcularBySiglaExata($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
     $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
 
     $qtdEncontrados = sizeof($bySiglaExatamente);
+    echo "x1/$qtdEncontrados/";
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <u>cadastrada</u>: ". formatarResultado($bySiglaExatamente[0]));
     }
@@ -41,6 +42,7 @@ function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno
     $bySiglaExataETitulo = getBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
 
     $qtdEncontrados = sizeof($bySiglaExataETitulo);
+    echo "x2/$qtdEncontrados/";
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaExataETitulo[0]['qualis'], "Caso #2: Encontrada uma classificação com, simultaneamente, essa sigla <u>cadastrada</u> <i><b>e</b></i>
                                                                     esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaExataETitulo[0]));
@@ -51,6 +53,7 @@ function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno
     } else { // $qtdEncontrados === 0
         // quando colocamos o titulo, nenhum resultado foi retornado
         $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
+        echo "x3/".sizeof($bySiglaExatamente)."/";
         return reportarMultiplosResultados($bySiglaExatamente, "Caso #4: Encontradas múltiplas classificações (" . sizeof($bySiglaExatamente) . ") com
                                                                                 essa sigla <u>cadastrada</u>, porém nenhuma bateu exatamente o título ('".$tituloDoEventoSemAno."'): ");
     }
@@ -134,11 +137,11 @@ function getBySiglaEfetiva($sigla) {
 }
 function getBySiglaExataETitulo($sigla, $titulo) {
     global $db;
-    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla` = '".$db->real_escape_string($sigla)."' AND `titulo` like '%".$db->real_escape_string($titulo)."%'");
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla` = '".$db->real_escape_string($sigla)."' AND `titulo` COLLATE UTF8_GENERAL_CI like '%".$db->real_escape_string($titulo)."%'");
 }
 function getBySiglaEfetivaETitulo($sigla, $titulo) {
     global $db;
-    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."' AND `titulo` like '%".$db->real_escape_string($titulo)."%'");
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."' AND `titulo` COLLATE UTF8_GENERAL_CI like '%".$db->real_escape_string($titulo)."%'");
 }
 
 function goSQL($sql) {
