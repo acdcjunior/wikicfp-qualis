@@ -6,12 +6,17 @@ include('calcularSiglaSintetica.php');
 
 <br>
 
-Atualizando siglas...
+Atualizando siglas efetivas para eventos que tiveram as siglas cadastradas...
+<?php
+$atualizando = $db->query("UPDATE `qualis` SET `sigla` = `sigla_efetiva` WHERE `sigla` is not null and `sigla` <> '' and `sigla` <> `sigla_efetiva`");
+echo "Alteradas ". $atualizando[1]->affected_rows . " linhas."
+?>
+
+<br>
+Gerando siglas efetivas para eventos sem siglas cadastradas...
 
 <?php
-
     $i = 0;
-
     $query = $db->query("SELECT id, titulo FROM `qualis` where `sigla` is null or `sigla` = ''");
     while($row = $query->fetch_array(MYSQLI_ASSOC)) {
         
