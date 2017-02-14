@@ -22,16 +22,16 @@ function calcularClassificacaoQualis($nomeEventoComAno) {
 
     $numeroDeEventosEncontradosComAMesmaSigla = sizeof($bySigla);
     if ($numeroDeEventosEncontradosComAMesmaSigla == 1) {
-        return resultado($bySigla[0]['qualis'], "Apenas um evento foi encontrado para essa sigla.<br>Título: ".$bySigla[0]['titulo']);
+        return resultado($bySigla[0]['qualis'], "Apenas uma classificacao foi encontrada para essa sigla.<br><br>Título: ".$bySigla[0]['titulo']);
     }
     if ($numeroDeEventosEncontradosComAMesmaSigla > 1) {
-        $result = "";
+        $todosConcatenados = "";
         for($i = 0; $i < sizeof($bySigla); $i++) {
-            $result .= "<br>Sigla: ".$bySigla[$i]['sigla_efetiva'].
+            $todosConcatenados .= "<br>Sigla: ".$bySigla[$i]['sigla_efetiva'].
                 "<br>Qualis: ".$bySigla[$i]['qualis'].
                 "<br>Título: ".$bySigla[$i]['titulo']."<br>";
         }
-        return resultado("Vários*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." foram encontrados para essa sigla: ".$result);
+        return resultado("Vários*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." encontrados para essa sigla: ".$todosConcatenados);
     } else {
         return resultado("-", "Nenhuma classificacao encontrada para essa sigla.");
     }
