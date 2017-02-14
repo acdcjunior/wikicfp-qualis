@@ -103,7 +103,7 @@ function reportarMultiplosResultados($todosResultados, $mensagem) {
     return resultado("Várias*", $mensagem . $multiplosResultadosConcatenados);
 }
 function formatarResultado($linhaQualis) {
-    return "<br>Sigla: " . $linhaQualis['sigla_efetiva'] .
+    return "<br>Sigla Cadastrada: " . $linhaQualis['sigla'] ."<br>Sigla Efetiva: " . $linhaQualis['sigla_efetiva'] .
            "<br>Qualis: " . $linhaQualis['qualis'] .
            "<br>Título: " . $linhaQualis['titulo'] . "<hr>";
 }
@@ -129,7 +129,7 @@ function getBySiglaExatamente($sigla) {
 }
 function getBySiglaEfetiva($sigla) {
     global $db;
-    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."'");
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."'");
 }
 function getBySiglaExataETitulo($sigla, $titulo) {
     global $db;
