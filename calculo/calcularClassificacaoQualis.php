@@ -22,10 +22,16 @@ function calcularClassificacaoQualis($nomeEventoComAno) {
 
     $numeroDeEventosEncontradosComAMesmaSigla = sizeof($bySigla);
     if ($numeroDeEventosEncontradosComAMesmaSigla == 1) {
-        return resultado($bySigla[0]['qualis'], "Apenas um evento foi encontrado para essa sigla.");
+        return resultado($bySigla[0]['qualis'], "Apenas um evento foi encontrado para essa sigla.<br>Título: ".$bySigla[0]['titulo']);
     }
     if ($numeroDeEventosEncontradosComAMesmaSigla > 1) {
-        return resultado("*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." foram encontrados para essa sigla.");
+        $result = "";
+        for($i = 0; $i < $bySigla; $i++) {
+            $result .= "<br>Sigla: ".$bySigla[$i]['sigla_efetiva'].
+                "<br>Qualis: ".$bySigla[$i]['qualis'].
+                "<br>Título: ".$bySigla[$i]['titulo']."<br>";
+        }
+        return resultado("Vários*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." foram encontrados para essa sigla: ".$result);
     } else {
         return resultado("-", "Nenhuma classificacao encontrada para essa sigla.");
     }
@@ -46,7 +52,7 @@ function resultado($qualis, $razao) {
 
 function getBySiglaExatamente($sigla) {
     global $db;
-    return goSQL("SELECT `qualis` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."'");
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."'");
 }
 
 function goSQL($sql) {

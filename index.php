@@ -96,6 +96,15 @@ function obterWiki($url) {
 <?= obterWiki('http://www.wikicfp.com/cfp/call?conference=data%20mining') ?>
 <?= obterWiki('http://www.wikicfp.com/cfp/call?conference=data%20mining&page=2') ?>
 
+<script>
+    $(document).ready(function() {
+        $('.tooltipped').each(function(index, element) {
+            var span = $('#' + $(element).attr('data-tooltip-id') + '>span:first-child');
+            span.before($(element).attr('data-tooltip'));
+            span.remove();
+        });
+    });
+</script>
 <hr id=fim>
 - Código fonte completo: <a href="https://github.com/acdcjunior/wikicfp-qualis">https://github.com/acdcjunior/wikicfp-qualis</a><br>
 - Função que determina o Qualis com base no título/sigla do evento vs. o que está no banco: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php">https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php</a><br>
