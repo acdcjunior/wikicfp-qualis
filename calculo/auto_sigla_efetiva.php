@@ -12,7 +12,7 @@ Atualizando siglas...
 
     $i = 0;
 
-    $query = $db->query("SELECT id, titulo FROM `qualis` where `sigla_efetiva` like 'DUMMY%'");
+    $query = $db->query("SELECT id, titulo FROM `qualis` where `sigla` is null or `sigla` = ''");
     while($row = $query->fetch_array(MYSQLI_ASSOC)) {
         
         $update = "UPDATE `qualis` SET `sigla_efetiva` =? WHERE id = ?";

@@ -24,6 +24,7 @@ function removerStopChars($titulo) {
     return preg_replace('/[-&\\t\\r\\n(){}\\[\\]:\\?]+/i', '', $titulo);
 }
 function removerStopWords($titulo) {
-    $stopWords = array('A','E','DE','DO','AND','OF','FOR');
-	return preg_replace('/\b(' . implode('|', $stopWords) . ')\b/', '', $titulo);
+    $stopWords = array('A', 'E', 'DE', 'DO', 'AND', 'OF', 'FOR', 'THE', 'ON');
+    $semStopWords = preg_replace('/\b(' . implode('|', $stopWords) . ')\b/', '', $titulo);
+    return preg_replace('/\b(1st|2nd|3rd|\d+th)\b/', '', $semStopWords);
 }
