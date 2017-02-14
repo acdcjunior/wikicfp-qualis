@@ -26,7 +26,7 @@ function calcularClassificacaoQualis($nomeEventoComAno) {
     }
     if ($numeroDeEventosEncontradosComAMesmaSigla > 1) {
         $result = "";
-        for($i = 0; $i < $bySigla; $i++) {
+        for($i = 0; $i < sizeof($bySigla); $i++) {
             $result .= "<br>Sigla: ".$bySigla[$i]['sigla_efetiva'].
                 "<br>Qualis: ".$bySigla[$i]['qualis'].
                 "<br>Título: ".$bySigla[$i]['titulo']."<br>";
