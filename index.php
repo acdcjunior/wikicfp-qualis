@@ -71,7 +71,11 @@ function obterWiki($url) {
     return "<hr>
             URL Referência: <a href='$url'>$url</a>
             <br>" . 
-            str_replace('src="/cfp/images/new.gif"', "src='http://www.wikicfp.com/cfp/images/new.gif'", $tableHtmlAsString);
+            str_replace('<a href="/cfp/servlet/', '<a href="http://www.wikicfp.com/cfp/servlet/',
+                str_replace('src="/cfp/images/new.gif"', "src='http://www.wikicfp.com/cfp/images/new.gif'",
+                    $tableHtmlAsString
+                )
+            );
 }
 
 ?>
