@@ -7,5 +7,6 @@ CREATE TABLE `qualis` (
   `issn` varchar(50) NULL,
   `area_avaliacao` varchar(50) NULL,
   `fonte` varchar(255) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
   PRIMARY KEY  (`id`)
 ) 
