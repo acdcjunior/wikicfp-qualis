@@ -31,7 +31,8 @@ function obterWiki($url) {
     $trHeader = $tabelaCallForPapers->childNodes->item(0);
     
     $tdQualisHeader = $dom->createElement('td', 'Qualis');
-    criarTooltip($dom, $tdQualisHeader, 'Passe o mouse sobre o qualis para entender como ele foi calculado.');
+    criarTooltip($dom, $tdQualisHeader, "Passe o mouse sobre a classificação qualis para uma breve explicação de como ela foi calculada.<br>
+                                                        Para maiores detalhes, veja os arquivos fontes referenciados no rodapé da página.");
     $icone = $dom->createElement('i', 'info_outline'); 
     criarAtributo($dom, $icone, 'class', 'material-icons');
     $tdQualisHeader->appendChild($icone);
@@ -114,7 +115,7 @@ function obterWiki($url) {
 </script>
 <hr id=fim>
 - Código fonte completo: <a href="https://github.com/acdcjunior/wikicfp-qualis">https://github.com/acdcjunior/wikicfp-qualis</a><br>
-- Função que determina o Qualis com base no título/sigla do evento vs. o que está no banco: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php">https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php</a><br>
-- Função de geração de siglas sintéticas para eventos carregados sem siglas: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularSiglaSintetica.php">https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularSiglaSintetica.php</a><br>
+- Para entender o que aconteceu em cada <code style="color: red">"Caso #X"</code> veja a função que determina o Qualis com base no título/sigla do evento vs. o que está no banco: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularClassificacaoQualis.php">/calcularClassificacaoQualis.php</a><br>
+- Função de geração de siglas sintéticas para eventos carregados sem siglas: <a href="https://github.com/acdcjunior/wikicfp-qualis/blob/master/calculo/calcularSiglaSintetica.php">/calcularSiglaSintetica.php</a><br>
 </body>
 </html>

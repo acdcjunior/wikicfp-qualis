@@ -28,8 +28,7 @@ function calcularBySiglaExata($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
 
     $qtdEncontrados = sizeof($bySiglaExatamente);
     if ($qtdEncontrados === 1) {
-        return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <b>cadastrada</b>:
-                                                                <hr>". formatarResultado($bySiglaExatamente[0]));
+        return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <b>cadastrada</b>: ". formatarResultado($bySiglaExatamente[0]));
     }
     if ($qtdEncontrados > 1) {
         return calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
@@ -104,8 +103,7 @@ function reportarMultiplosResultados($todosResultados, $mensagem) {
     return resultado("Várias*", $mensagem . $multiplosResultadosConcatenados);
 }
 function formatarResultado($linhaQualis) {
-    return "<hr>
-            <br>Sigla Cadastrada: " . $linhaQualis['sigla'] ."<br>Sigla Efetiva: " . $linhaQualis['sigla_efetiva'] .
+    return "<hr>Sigla Cadastrada: " . $linhaQualis['sigla'] ."<br>Sigla Efetiva: " . $linhaQualis['sigla_efetiva'] .
            "<br>Qualis: " . $linhaQualis['qualis'] .
            "<br>Título: " . $linhaQualis['titulo'] .
            "<hr>";
