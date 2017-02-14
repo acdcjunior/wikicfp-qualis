@@ -28,8 +28,8 @@ function calcularBySiglaExata($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
 
     $qtdEncontrados = sizeof($bySiglaExatamente);
     if ($qtdEncontrados === 1) {
-        return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <b>cadastrada</b>.
-                                                                <br>". formatarResultado($bySiglaExatamente[0]));
+        return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <b>cadastrada</b>:
+                                                                <hr>". formatarResultado($bySiglaExatamente[0]));
     }
     if ($qtdEncontrados > 1) {
         return calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
@@ -44,7 +44,7 @@ function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno
     $qtdEncontrados = sizeof($bySiglaExataETitulo);
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaExataETitulo[0]['qualis'], "Caso #2: Encontrada uma classificação com essa sigla <b>cadastrada</b> e
-                                                                    esse título ('".$tituloDoEventoSemAno."').<br>". formatarResultado($bySiglaExataETitulo[0]));
+                                                                    esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaExataETitulo[0]));
     }
     if ($qtdEncontrados > 1) {
         return reportarMultiplosResultados($bySiglaExataETitulo, "Caso #3: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com
@@ -63,7 +63,7 @@ function calcularBySiglaEfetiva($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
     $qtdEncontrados = sizeof($bySiglaEfetiva);
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaEfetiva[0]['qualis'], "Caso #5: Encontrada uma classificação com essa sigla <b>sintética</b> (isto é, gerada pelo sistema com
-                                                                base no título).<br>". formatarResultado($bySiglaEfetiva[0]));
+                                                                base no título): ". formatarResultado($bySiglaEfetiva[0]));
     }
     if ($qtdEncontrados > 1) {
         return calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
@@ -78,11 +78,12 @@ function calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemA
     $qtdEncontrados = sizeof($bySiglaEfetivaETitulo);
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaEfetivaETitulo[0]['qualis'], "Caso #7: Encontrada uma classificação com essa sigla <b>sintética</b> (isto é, gerada pelo sistema com
-                                                                base no título) e esse título ('".$tituloDoEventoSemAno."').<br>". formatarResultado($bySiglaEfetivaETitulo[0]));
+                                                                base no título) e esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaEfetivaETitulo[0]));
     }
     if ($qtdEncontrados > 1) {
         return reportarMultiplosResultados($bySiglaEfetivaETitulo, "Caso #8: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com
-                                                                                    essa sigla <b>sintética</b> (isto é, gerada pelo sistema com base no título) e título ('".$tituloDoEventoSemAno."'): ");
+                                                                                    essa sigla <b>sintética</b> (isto é, gerada pelo sistema com base no título) e
+                                                                                     título ('".$tituloDoEventoSemAno."'): ");
     } else { // $qtdEncontrados === 0
         // quando colocamos o titulo, nenhum resultado foi retornado
         $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
@@ -95,7 +96,7 @@ function calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemA
 
 
 function reportarMultiplosResultados($todosResultados, $mensagem) {
-    $multiplosResultadosConcatenados = "<hr>";
+    $multiplosResultadosConcatenados = "";
     $numeroResultados = sizeof($todosResultados);
     for ($i = 0; $i < $numeroResultados; $i++) {
         $multiplosResultadosConcatenados .= formatarResultado($todosResultados[$i]);
@@ -103,9 +104,11 @@ function reportarMultiplosResultados($todosResultados, $mensagem) {
     return resultado("Várias*", $mensagem . $multiplosResultadosConcatenados);
 }
 function formatarResultado($linhaQualis) {
-    return "<br>Sigla Cadastrada: " . $linhaQualis['sigla'] ."<br>Sigla Efetiva: " . $linhaQualis['sigla_efetiva'] .
+    return "<hr>
+            <br>Sigla Cadastrada: " . $linhaQualis['sigla'] ."<br>Sigla Efetiva: " . $linhaQualis['sigla_efetiva'] .
            "<br>Qualis: " . $linhaQualis['qualis'] .
-           "<br>Título: " . $linhaQualis['titulo'] . "<hr>";
+           "<br>Título: " . $linhaQualis['titulo'] .
+           "<hr>";
 }
 
 
