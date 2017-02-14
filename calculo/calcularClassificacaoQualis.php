@@ -27,7 +27,7 @@ function calcularBySiglaExata($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
     $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
 
     $qtdEncontrados = sizeof($bySiglaExatamente);
-    echo "x1/$qtdEncontrados/";
+    echo " x1/$siglaDoEventoSemAno/$qtdEncontrados/ ";
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <u>cadastrada</u>: ". formatarResultado($bySiglaExatamente[0]));
     }
@@ -42,7 +42,7 @@ function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno
     $bySiglaExataETitulo = getBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
 
     $qtdEncontrados = sizeof($bySiglaExataETitulo);
-    echo "x2/$qtdEncontrados/";
+    echo " x2/$siglaDoEventoSemAno/$qtdEncontrados/ ";
     if ($qtdEncontrados === 1) {
         return resultado($bySiglaExataETitulo[0]['qualis'], "Caso #2: Encontrada uma classificação com, simultaneamente, essa sigla <u>cadastrada</u> <i><b>e</b></i>
                                                                     esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaExataETitulo[0]));
@@ -53,7 +53,7 @@ function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno
     } else { // $qtdEncontrados === 0
         // quando colocamos o titulo, nenhum resultado foi retornado
         $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
-        echo "x3/".sizeof($bySiglaExatamente)."/";
+        echo " x3/$siglaDoEventoSemAno/".sizeof($bySiglaExatamente)." /";
         return reportarMultiplosResultados($bySiglaExatamente, "Caso #4: Encontradas múltiplas classificações (" . sizeof($bySiglaExatamente) . ") com
                                                                                 essa sigla <u>cadastrada</u>, porém nenhuma bateu exatamente o título ('".$tituloDoEventoSemAno."'): ");
     }
