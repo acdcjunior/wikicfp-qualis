@@ -95,7 +95,7 @@ function calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemA
 
 
 function reportarMultiplosResultados($todosResultados, $mensagem) {
-    $multiplosResultadosConcatenados = "";
+    $multiplosResultadosConcatenados = "<hr>";
     $numeroResultados = sizeof($todosResultados);
     for ($i = 0; $i < $numeroResultados; $i++) {
         $multiplosResultadosConcatenados .= formatarResultado($todosResultados[$i]);
@@ -105,7 +105,7 @@ function reportarMultiplosResultados($todosResultados, $mensagem) {
 function formatarResultado($linhaQualis) {
     return "<br>Sigla: " . $linhaQualis['sigla_efetiva'] .
            "<br>Qualis: " . $linhaQualis['qualis'] .
-           "<br>Título: " . $linhaQualis['titulo'] . "<br>";
+           "<br>Título: " . $linhaQualis['titulo'] . "<hr>";
 }
 
 
