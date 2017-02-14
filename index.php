@@ -50,8 +50,11 @@ function obterWiki($url) {
         if ($tdSiglaConfEncontrada->length > 0) {
             $tdNomeConfEncontrada = $xpath->query('td[@rowspan=2]/following-sibling::td', $tr);
             $tdNomeConf = $tdNomeConfEncontrada->item(0);
-            
-            $qualisDoEvento = calcularClassificacaoQualis($tdSiglaConfEncontrada->item(0)->textContent);
+
+            $tituloDoEvento = $tdNomeConf->textContent;
+            $siglaDoEvento = $tdSiglaConfEncontrada->item(0)->textContent;
+
+            $qualisDoEvento = calcularClassificacaoQualis($siglaDoEvento, $tituloDoEvento);
             
             $tdQualis = $dom->createElement('td', $qualisDoEvento->qualis); 
             $tdQualisAtributoRowspan = $dom->createAttribute('rowspan');

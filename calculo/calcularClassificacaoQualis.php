@@ -1,5 +1,7 @@
 <?php
 
+include('calcularSiglaSintetica.php');
+
 /*
     https://ppca-2016-2.slack.com/archives/mineracao/p1484746495000002
 
@@ -15,34 +17,105 @@
     com um valor sintetico (gerado), mesmo quando o evento nao teve sigla cadastrada.
 
 */
-function calcularClassificacaoQualis($nomeEventoComAno) {
-    $nomeEventoSemAno = removerAno($nomeEventoComAno);
-    
-    $bySigla = getBySiglaExatamente($nomeEventoSemAno);
+function calcularClassificacaoQualis($siglaDoEventoComAno, $tituloDoEventoComAno) {
+    $siglaDoEventoSemAno = removerAnoDaSigla($siglaDoEventoComAno);
+    $tituloDoEventoSemAno = removerAnoDoTitulo($tituloDoEventoComAno);
+    return calcularBySiglaExata($siglaDoEventoSemAno, $tituloDoEventoSemAno);
+}
 
-    $numeroDeEventosEncontradosComAMesmaSigla = sizeof($bySigla);
-    if ($numeroDeEventosEncontradosComAMesmaSigla == 1) {
-        return resultado($bySigla[0]['qualis'], "Apenas uma classificacao foi encontrada para essa sigla.<br><br>Título: ".$bySigla[0]['titulo']);
+function calcularBySiglaExata($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
+    $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
+
+    $qtdEncontrados = sizeof($bySiglaExatamente);
+    if ($qtdEncontrados === 1) {
+        return resultado($bySiglaExatamente[0]['qualis'], "Caso #1: Encontrada uma classificação com essa sigla <b>cadastrada</b>.
+                                                                <br>". formatarResultado($bySiglaExatamente[0]));
     }
-    if ($numeroDeEventosEncontradosComAMesmaSigla > 1) {
-        $todosConcatenados = "";
-        for($i = 0; $i < sizeof($bySigla); $i++) {
-            $todosConcatenados .= "<br>Sigla: ".$bySigla[$i]['sigla_efetiva'].
-                "<br>Qualis: ".$bySigla[$i]['qualis'].
-                "<br>Título: ".$bySigla[$i]['titulo']."<br>";
-        }
-        return resultado("Vários*", "Multiplos Qualis: ".$numeroDeEventosEncontradosComAMesmaSigla." encontrados para essa sigla: ".$todosConcatenados);
-    } else {
-        return resultado("-", "Nenhuma classificacao encontrada para essa sigla.");
+    if ($qtdEncontrados > 1) {
+        return calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
+    } else { // $qtdEncontrados === 0
+        return calcularBySiglaEfetiva($siglaDoEventoSemAno, $tituloDoEventoSemAno);
+    }
+}
+
+function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
+    $bySiglaExataETitulo = getBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
+
+    $qtdEncontrados = sizeof($bySiglaExataETitulo);
+    if ($qtdEncontrados === 1) {
+        return resultado($bySiglaExataETitulo[0]['qualis'], "Caso #2: Encontrada uma classificação com essa sigla <b>cadastrada</b> e
+                                                                    esse título.<br>". formatarResultado($bySiglaExataETitulo[0]));
+    }
+    if ($qtdEncontrados > 1) {
+        return reportarMultiplosResultados($bySiglaExataETitulo, "Caso #3: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com
+                                                                                    essa sigla <b>cadastrada</b> e título: ");
+    } else { // $qtdEncontrados === 0
+        // quando colocamos o titulo, nenhum resultado foi retornado
+        $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
+        return reportarMultiplosResultados($bySiglaExatamente, "Caso #4: Encontradas múltiplas classificações (" . sizeof($bySiglaExatamente) . ") com
+                                                                                essa sigla <b>cadastrada</b>, porém nenhuma bateu exatamente o título: ");
+    }
+}
+
+function calcularBySiglaEfetiva($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
+    $bySiglaEfetiva = getBySiglaEfetiva($siglaDoEventoSemAno);
+
+    $qtdEncontrados = sizeof($bySiglaEfetiva);
+    if ($qtdEncontrados === 1) {
+        return resultado($bySiglaEfetiva[0]['qualis'], "Caso #5: Encontrada uma classificação com essa sigla <b>sintética</b> (isto é, gerada pelo sistema com
+                                                                base no título).<br>". formatarResultado($bySiglaEfetiva[0]));
+    }
+    if ($qtdEncontrados > 1) {
+        return calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
+    } else { // $qtdEncontrados === 0
+        return resultado("-", "Caso #6: Nenhuma classificação encontrada para essa sigla.");
+    }
+}
+
+function calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno) {
+    $bySiglaEfetivaETitulo = getBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno);
+
+    $qtdEncontrados = sizeof($bySiglaEfetivaETitulo);
+    if ($qtdEncontrados === 1) {
+        return resultado($bySiglaEfetivaETitulo[0]['qualis'], "Caso #7: Encontrada uma classificação com essa sigla <b>sintética</b> (isto é, gerada pelo sistema com
+                                                                base no título) e esse título.<br>". formatarResultado($bySiglaEfetivaETitulo[0]));
+    }
+    if ($qtdEncontrados > 1) {
+        return reportarMultiplosResultados($bySiglaEfetivaETitulo, "Caso #8: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com
+                                                                                    essa sigla <b>sintética</b> (isto é, gerada pelo sistema com base no título) e título: ");
+    } else { // $qtdEncontrados === 0
+        // quando colocamos o titulo, nenhum resultado foi retornado
+        $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
+        return reportarMultiplosResultados($bySiglaExatamente, "Caso #4: Encontradas múltiplas classificações (" . sizeof($bySiglaExatamente) . ") com
+                                                                                essa sigla <b>sintética</b> (isto é, gerada pelo sistema com base no título), porém nenhuma 
+                                                                                bateu exatamente o título: ");
     }
 }
 
 
 
-
-function removerAno($nome) {
-    return preg_replace("/(19|20)\d\d/", "", trim($nome));
+function reportarMultiplosResultados($todosResultados, $mensagem) {
+    $multiplosResultadosConcatenados = "";
+    $numeroResultados = sizeof($todosResultados);
+    for ($i = 0; $i < $numeroResultados; $i++) {
+        $multiplosResultadosConcatenados .= formatarResultado($todosResultados[$i]);
+    }
+    return resultado("Várias*", $mensagem . $multiplosResultadosConcatenados);
 }
+function formatarResultado($linhaQualis) {
+    return "<br>Sigla: " . $linhaQualis['sigla_efetiva'] .
+           "<br>Qualis: " . $linhaQualis['qualis'] .
+           "<br>Título: " . $linhaQualis['titulo'] . "<br>";
+}
+
+
+function removerAnoDaSigla($sigla) {
+    return preg_replace("/(19|20)\d\d/", "", trim($sigla));
+}
+function removerAnoDoTitulo($titulo) {
+    return removerStopWords(trim($titulo));
+}
+
 function resultado($qualis, $razao) {
     $obj = new stdClass;
     $obj->qualis = $qualis;
@@ -52,7 +125,19 @@ function resultado($qualis, $razao) {
 
 function getBySiglaExatamente($sigla) {
     global $db;
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla` = '".$db->real_escape_string($sigla)."'");
+}
+function getBySiglaEfetiva($sigla) {
+    global $db;
     return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."'");
+}
+function getBySiglaExataETitulo($sigla, $titulo) {
+    global $db;
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla` = '".$db->real_escape_string($sigla)."' AND `titulo` like '%".$db->real_escape_string($titulo)."%'");
+}
+function getBySiglaEfetivaETitulo($sigla, $titulo) {
+    global $db;
+    return goSQL("SELECT `qualis`, `titulo`, `sigla_efetiva`, `sigla` FROM `qualis` WHERE `sigla_efetiva` = '".$db->real_escape_string($sigla)."' AND `titulo` like '%".$db->real_escape_string($titulo)."%'");
 }
 
 function goSQL($sql) {
