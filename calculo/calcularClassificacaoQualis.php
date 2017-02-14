@@ -103,7 +103,7 @@ function reportarMultiplosResultados($todosResultados, $mensagem) {
     return resultado("Várias*", $mensagem . $multiplosResultadosConcatenados);
 }
 function formatarResultado($linhaQualis) {
-    return "<hr>Sigla Cadastrada: " . $linhaQualis['sigla'] ."<br>Sigla Efetiva: " . $linhaQualis['sigla_efetiva'] .
+    return "<hr>Sigla: " . $linhaQualis['sigla_efetiva'] .
            "<br>Qualis: " . $linhaQualis['qualis'] .
            "<br>Título: " . $linhaQualis['titulo'] .
            "<hr>";
