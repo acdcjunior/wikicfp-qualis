@@ -42,12 +42,12 @@ function calcularBySiglaExataETitulo($siglaDoEventoSemAno, $tituloDoEventoSemAno
 
     $qtdEncontrados = sizeof($bySiglaExataETitulo);
     if ($qtdEncontrados === 1) {
-        return resultado($bySiglaExataETitulo[0]['qualis'], "Caso #2: Encontrada uma classificação com essa sigla <b>cadastrada</b> e
+        return resultado($bySiglaExataETitulo[0]['qualis'], "Caso #2: Encontrada uma classificação com, simultaneamente, essa sigla <b>cadastrada</b> <i><b>e</b></i>
                                                                     esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaExataETitulo[0]));
     }
     if ($qtdEncontrados > 1) {
-        return reportarMultiplosResultados($bySiglaExataETitulo, "Caso #3: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com
-                                                                                    essa sigla <b>cadastrada</b> e título ('".$tituloDoEventoSemAno."'): ");
+        return reportarMultiplosResultados($bySiglaExataETitulo, "Caso #3: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com, simultaneamente,
+                                                                                    essa sigla <b>cadastrada</b> <i><b>e</b></i> esse título ('".$tituloDoEventoSemAno."'): ");
     } else { // $qtdEncontrados === 0
         // quando colocamos o titulo, nenhum resultado foi retornado
         $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
@@ -76,13 +76,13 @@ function calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemA
 
     $qtdEncontrados = sizeof($bySiglaEfetivaETitulo);
     if ($qtdEncontrados === 1) {
-        return resultado($bySiglaEfetivaETitulo[0]['qualis'], "Caso #7: Encontrada uma classificação com essa sigla <b>sintética</b> (isto é, gerada pelo sistema com
-                                                                base no título) e esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaEfetivaETitulo[0]));
+        return resultado($bySiglaEfetivaETitulo[0]['qualis'], "Caso #7: Encontrada uma classificação com, simultaneamente, essa sigla <b>sintética</b> (isto é, gerada pelo sistema com
+                                                                base no título) <i><b>e</b></i> esse título ('".$tituloDoEventoSemAno."'): ". formatarResultado($bySiglaEfetivaETitulo[0]));
     }
     if ($qtdEncontrados > 1) {
-        return reportarMultiplosResultados($bySiglaEfetivaETitulo, "Caso #8: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com
-                                                                                    essa sigla <b>sintética</b> (isto é, gerada pelo sistema com base no título) e
-                                                                                     título ('".$tituloDoEventoSemAno."'): ");
+        return reportarMultiplosResultados($bySiglaEfetivaETitulo, "Caso #8: Encontradas múltiplas classificações (" . $qtdEncontrados . ") com, simultaneamente,
+                                                                                    essa sigla <b>sintética</b> (isto é, gerada pelo sistema com base no título) <i><b>e</b></i>
+                                                                                    esse título ('".$tituloDoEventoSemAno."'): ");
     } else { // $qtdEncontrados === 0
         // quando colocamos o titulo, nenhum resultado foi retornado
         $bySiglaExatamente = getBySiglaExatamente($siglaDoEventoSemAno);
