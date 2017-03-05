@@ -25,8 +25,7 @@ if (!isset($pagina) || $pagina < 1) {
         <th style="width: 40%"><b>Título</b></th>
         <th style="width: 20%"><b>Sigla</b></th>
         <th style="width: 5%"><b>Qualis</b></th>
-        <th style="width: 10%"><b>ISSN</b></th>
-        <th style="width: 15%"><b>Área de Avaliação</b></th>
+        <th style="width: 10%"><b>Outros Metadados</b></th>
         <th style="width: 5%"><b>Fonte</b></th>
         <th style="width: 5%">&nbsp;</th>
     </tr>
@@ -51,7 +50,7 @@ if (!isset($pagina) || $pagina < 1) {
         return " class='tooltipped' data-delay='10' data-tooltip='".nl2br($valorCampo)."'>" . (strlen($valorCampo) > $tamanhoMax ? substr($valorCampo, 0, $tamanhoMax)."..." : $valorCampo);
     }
 
-    $query = $db->query("SELECT * FROM `qualis` order by titulo, sigla LIMIT $start, $limit");
+    $query = $db->query("SELECT `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, COLUMN_JSON(`metadados`) as metadados FROM `qualis` order by titulo, sigla LIMIT $start, $limit");
     while($row = $query->fetch_array(MYSQLI_ASSOC)) { 
         foreach($row AS $key => $value) { $row[$key] = stripslashes($value); } 
         echo "<tr>";  
@@ -66,8 +65,17 @@ if (!isset($pagina) || $pagina < 1) {
         }
         
         echo "<td valign='top'>" . nl2br( $row['qualis']) . "</td>";
-        echo "<td valign='top' " . nulavel("número ISSN", "o", $row['issn']) . "</td>";
-        echo "<td valign='top' " . nulavel("Área de Avaliação", "a", $row['area_avaliacao']) . "</td>";
+
+        //<editor-fold desc="COLUNA METADADOS">
+            $metadados = json_decode($row['metadados']);
+            echo "<td valign='top' class='tooltipped' data-delay='10' data-tooltip='";
+            foreach($metadados as $nomePropriedade => $valorPropriedade)
+            {
+                echo $nomePropriedade.": ".$valorPropriedade."<br>";
+            }
+            echo "'><i class=\"material-icons\">subtitles</i></td>";
+        //</editor-fold>
+
         echo "<td valign='top' " . truncavel($row['fonte'], 5) . "</td>";
         echo "<td valign='top'>"
         ?>
@@ -90,7 +98,7 @@ if (!isset($pagina) || $pagina < 1) {
 </table>
 <br>
 <?php
-    $rows = $db->query("SELECT * FROM `qualis`")->num_rows;
+    $rows = $db->query("SELECT 1 FROM `qualis`")->num_rows;
     $total = ceil($rows/$limit);
 ?>
     <div class="container">
