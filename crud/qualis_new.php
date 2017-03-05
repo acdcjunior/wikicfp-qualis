@@ -15,22 +15,18 @@ if (isset($_POST['submitted'])) {
   $sql = "
     INSERT INTO `qualis`
     (
-      `issn`,
       `sigla`,
       `sigla_efetiva`,
       `titulo`,
       `qualis`,
-      `area_avaliacao`,
       `fonte`
     )
     VALUES
     (
-      '{$_POST['issn']}',
       '{$_POST['sigla']}',
       '$siglaEfetiva',
       '$titulo',
       '{$_POST['qualis']}',
-      '{$_POST['area_avaliacao']}',
       '{$_POST['fonte']}'
     )
     "; 
@@ -41,7 +37,6 @@ if (isset($_POST['submitted'])) {
   } else {
     echo "Erro: " . $sql . "<br>" . $db->error;
   }
-  
 
   return;
 } 

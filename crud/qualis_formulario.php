@@ -43,21 +43,6 @@ function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $row)
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <input type="text" class="validate" id="issn" name='issn'
-                               value='<?= stripslashes($row['issn']) ?>'><label for="issn">ISSN (Ex.: 0098-5589)</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input type="text" class="validate" id="area_avaliacao" name='area_avaliacao'
-                               value='<?= stripslashes($row['area_avaliacao']) ?>'><label for="area_avaliacao">Área de
-                            Avaliação (Ex.: CIÊNCIA DA COMPUTAÇÃO)</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s12">
                         <input type="text" class="validate" id="fonte" name='fonte' required
                                value='<?= stripslashes($row['fonte']) ?>'><label for="fonte">Onde esse valor de Qualis
                             foi obtido? (Ex.: site oficial, google, outros.)</label>

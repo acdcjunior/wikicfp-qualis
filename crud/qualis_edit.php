@@ -16,15 +16,14 @@ if (isset($_GET['id']) ) {
 
     $sql = "
     UPDATE `qualis` SET
-      `issn`           = '{$_POST['issn']}',
       `sigla`          = '{$_POST['sigla']}',
       `sigla_efetiva`  = '$siglaEfetiva',
       `titulo`         = '$titulo',
       `qualis`         = '{$_POST['qualis']}',
-      `area_avaliacao` = '{$_POST['area_avaliacao']}',
       `fonte`          = '{$_POST['fonte']}'
     WHERE `id` = '$id' 
-    "; 
+    ";
+
     $db->query($sql); 
     
     echo "<br>";
@@ -35,14 +34,17 @@ if (isset($_GET['id']) ) {
     }
     echo "<a href='qualis_list.php'>Voltar para listagem.</a>"; 
     return;
-  } 
-  
-  $row = $db->query("SELECT * FROM `qualis` WHERE `id` = '$id' ")->fetch_array();
+  }
+
+  $row = $db->query("
+    SELECT `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, COLUMN_JSON(`metadados`) as metadados
+    FROM `qualis`
+    WHERE `id` = '$id'
+  ")->fetch_array();
 
   include('qualis_formulario.php');
 
   qualisFormulario('Editar Classificação Qualis', 'Editar', $row);
-
 }
 
 include('crud_rodape.php');
