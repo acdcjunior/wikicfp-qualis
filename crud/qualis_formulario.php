@@ -1,6 +1,6 @@
 <?php
 
-function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $row)
+function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $metadados, $row)
 {
     ?>
     <div class="container">
@@ -49,6 +49,26 @@ function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $row)
                     </div>
                 </div>
 
+                <?php if ($metadados) { ?>
+                <div >
+                    <div class="row">
+                    <h5>Metadados
+                        <a class="btn-floating btn-small waves-effect waves-light tooltipped blue"
+                           data-position='bottom' data-delay='10'
+                           data-tooltip='Clique para incluir um novo metadado'
+                           id="botao-novo-metadado"
+                        ><i class="material-icons">add</i></a>
+                    </h5>
+                    </div>
+                    <div id="grupo-metadados" class="container">
+                    </div>
+                </div>
+                <?php } else { ?>
+                    <div class="row">
+                        <h6>Salve este item para habilitar a edição de metadados.</h6>
+                    </div>
+                <?php } ?>
+
                 <div class="row">
                     <input type='hidden' value='1' name='submitted'/>
                     <button class="btn waves-effect waves-light" type="submit" name="action"
@@ -58,9 +78,77 @@ function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $row)
                     <a class="btn waves-effect waves-light grey lighten-5" style='color: black'
                        href='qualis_list.php'><i class="material-icons right">undo</i>Voltar para listagem</a>
                 </div>
+
+                <input type="text" name='metadados' id="input-metadados">
             </form>
         </div>
     </div>
+
+    <!--suppress JSValidateTypes, JSUnresolvedFunction -->
+    <script>
+        var GRUPO_METADADOS = $("#grupo-metadados");
+        var INPUT_METADADOS = $("#input-metadados");
+
+        var modeloLinha = '' +
+'           <div class="row"> ' +
+'                <div class="input-field col s10"> ' +
+'                     <input type="text" class="validate" data-metadado="@nomeDoMetadadoQuoted#" id="meta-@nomeDoMetadadoQuoted#" required>' +
+'                     <label for="meta-@nomeDoMetadadoQuoted#">@nomeDoMetadado#</label> ' +
+'                </div> ' +
+'                <div class="input-field col s2"> ' +
+'                    <a class="btn-floating btn-small waves-effect waves-light tooltipped blue" data-position="bottom" data-delay="10" data-tooltip="Clique para excluir este metadado"' +
+'                        onclick=\'return removerMetadado("@nomeDoMetadado#");\'> ' +
+'                        <i class="material-icons">remove</i>' +
+'                    </a> ' +
+'                 </div> ' +
+'            </div>';
+
+        var metadadosJSON = "<?= addslashes($row['metadados']) ?>";
+        if (metadadosJSON.trim() === '') {
+            metadadosJSON = '{}';
+        }
+
+        var metadados = JSON.parse(metadadosJSON);
+
+        function pintar() {
+            GRUPO_METADADOS.empty();
+            Object.keys(metadados).forEach(function (key, index) {
+                var modeloComValores = modeloLinha.replace(/@nomeDoMetadadoQuoted#/g, key.replace(/"/g, '&quot;')).replace(/@nomeDoMetadado#/g, key)
+                var novoGrupo = $(modeloComValores);
+                novoGrupo.find("[data-metadado]").val(metadados[key]);
+                novoGrupo.appendTo(GRUPO_METADADOS);
+            });
+            $("[data-metadado]").focus();
+        }
+
+        function removerMetadado(nomeDoMetadado) {
+            delete metadados[nomeDoMetadado];
+            pintar();
+            return false;
+        }
+
+        $(document).on('keydown', "[data-metadado]", atualizarInputMetadados);
+        function atualizarInputMetadados() {
+            window.metadados = {};
+            $("[data-metadado]").each(function () {
+                metadados[$(this).data("metadado").replace(/&quot;/g, '"')] = $(this).val();
+            });
+            INPUT_METADADOS.val(JSON.stringify(window.metadados));
+            console.log(JSON.stringify(window.metadados));
+        }
+
+        $("#botao-novo-metadado").click(function () {
+            var nomeDoNovoMetadado = prompt("Qual o nome do novo metadado?");
+            window.metadados[nomeDoNovoMetadado] = '';
+            pintar();
+        });
+
+        $("#btnSubmit").click(atualizarInputMetadados);
+
+        pintar();
+        atualizarInputMetadados();
+        $("#titulo").focus();
+    </script>
     <script type="text/javascript">
         /* global $ */
         $(document).ready(function () {

@@ -1,6 +1,7 @@
 <?php 
 
 include('../cabecalho.php');
+include('../utils.php');
 
 $start = 0;
 $limit = 10;
@@ -50,9 +51,10 @@ if (!isset($pagina) || $pagina < 1) {
         return " class='tooltipped' data-delay='10' data-tooltip='".nl2br($valorCampo)."'>" . (strlen($valorCampo) > $tamanhoMax ? substr($valorCampo, 0, $tamanhoMax)."..." : $valorCampo);
     }
 
-    $query = $db->query("SELECT `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, COLUMN_JSON(`metadados`) as metadados FROM `qualis` order by titulo, sigla LIMIT $start, $limit");
+
+    $query = $db->query("SELECT `id`, `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, `metadados` FROM `qualis` order by titulo, sigla LIMIT $start, $limit");
     while($row = $query->fetch_array(MYSQLI_ASSOC)) { 
-        foreach($row AS $key => $value) { $row[$key] = stripslashes($value); } 
+        foreach($row AS $key => $value) { if ($key !== 'metadados') $row[$key] = stripslashes($value); }
         echo "<tr>";  
         echo "<td valign='top' class='tooltipped' data-delay='1000' data-tooltip='Id desta linha no banco: ".$row['id']."'>" . nl2br( $row['titulo']) . "</td>";
         
@@ -67,13 +69,16 @@ if (!isset($pagina) || $pagina < 1) {
         echo "<td valign='top'>" . nl2br( $row['qualis']) . "</td>";
 
         //<editor-fold desc="COLUNA METADADOS">
-            $metadados = json_decode($row['metadados']);
-            echo "<td valign='top' class='tooltipped' data-delay='10' data-tooltip='";
-            foreach($metadados as $nomePropriedade => $valorPropriedade)
-            {
-                echo $nomePropriedade.": ".$valorPropriedade."<br>";
+            echo "<td valign='top' class='tooltipped' data-delay='10' data-tooltip=\"";
+            if ($row['metadados'] !== '' and $row['metadados'] !== '{}') {
+                $metadados = json_decode($row['metadados'] === '' ? '{}' : $row['metadados']);
+                foreach ($metadados as $nomePropriedade => $valorPropriedade) {
+                    echo quoteHTML($nomePropriedade) . ": " . quoteHTML($valorPropriedade) . "<br>";
+                }
+            } else {
+                echo "Nenhum metadado cadastrado para este item.";
             }
-            echo "'><i class=\"material-icons\">subtitles</i></td>";
+            echo "\"><i class=\"material-icons\">subtitles</i></td>";
         //</editor-fold>
 
         echo "<td valign='top' " . truncavel($row['fonte'], 5) . "</td>";

@@ -2,6 +2,7 @@
 
 include('../cabecalho.php');
 include('../calculo/calcularSiglaSintetica.php');
+include('../utils.php');
 
 if (isset($_GET['id']) ) {
   $id = (int) $_GET['id']; 
@@ -20,31 +21,32 @@ if (isset($_GET['id']) ) {
       `sigla_efetiva`  = '$siglaEfetiva',
       `titulo`         = '$titulo',
       `qualis`         = '{$_POST['qualis']}',
-      `fonte`          = '{$_POST['fonte']}'
+      `fonte`          = '{$_POST['fonte']}',
+      `metadados`      = \"{$_POST['metadados']}\"
     WHERE `id` = '$id' 
     ";
 
-    $db->query($sql); 
-    
+    $db->query($sql);
+
     echo "<br>";
     if ($db->affected_rows) {
       echo "<h2>Linha editada.</h2>";
-    } else { 
-      echo "<h2>Nada Mudou.</h2>"; 
+    } else {
+      echo "<h2>Nada Mudou.</h2>";
     }
-    echo "<a href='qualis_list.php'>Voltar para listagem.</a>"; 
+    echo "<a href='qualis_list.php'>Voltar para listagem.</a>";
     return;
   }
 
   $row = $db->query("
-    SELECT `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, COLUMN_JSON(`metadados`) as metadados
+    SELECT `id`, `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, `metadados`
     FROM `qualis`
     WHERE `id` = '$id'
   ")->fetch_array();
 
   include('qualis_formulario.php');
 
-  qualisFormulario('Editar Classificação Qualis', 'Editar', $row);
+  qualisFormulario('Editar Classificação Qualis', 'Editar', true, $row);
 }
 
 include('crud_rodape.php');
