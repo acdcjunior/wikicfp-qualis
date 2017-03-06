@@ -3,6 +3,11 @@
 include('cabecalho.php');
 include('calculo/calcularClassificacaoQualis.php');
 
+if (isset($_GET['categoria']) && trim($_GET['categoria']) !== '') {
+    $categoria = urlencode(trim($_GET['categoria']));
+} else {
+    $categoria = urlencode('data mining');
+}
 
 function criarAtributo($dom, $pai, $nomeAtributo, $valorAtributo) {
     $atributo = $dom->createAttribute($nomeAtributo);
@@ -16,8 +21,18 @@ function criarTooltip($dom, $elemento, $texto) {
     criarAtributo($dom, $elemento, 'data-tooltip', $texto);
 }
 
-function obterWiki($url) {
+function obterWiki($url, $first) {
+    global $categoria;
+
     $html = file_get_contents($url);
+
+    if (strpos($html, 'Category "'.$categoria.'" is undefined.') !== false) {
+        if (!$first) {
+            return "";
+        }
+        return "<h3>A categoria \"$categoria\" buscada não existe. Clique no botão voltar do browser e tente novamente.</h3>";
+    }
+
     $dom = new DOMDocument();
     
     libxml_use_internal_errors(true);
@@ -26,7 +41,7 @@ function obterWiki($url) {
     
     $xpath = new DOMXpath($dom);
     $tabelaCallForPapers = $xpath->query("//table[./tr/td[contains(text(), 'Event')]]")->item(0);
-    
+
     // add qualis header
     $trHeader = $tabelaCallForPapers->childNodes->item(0);
     
@@ -72,9 +87,25 @@ function obterWiki($url) {
     
     $tableHtmlAsString = $dom->saveXML($tabelaCallForPapers);
 
-    return "<hr>
-            URL Referência: <a href='$url'>$url</a>
-            <br>" . 
+
+    $retorno = "<hr>
+            URL Referência: <a href='$url'>$url</a>";
+    if ($first) {
+        $retorno .=
+            "<form action='' method='GET' class=\"row\">
+                <div class=\"col s12\">
+                    <div class=\"row\">
+                        <div class=\"input-field col s12\">
+                            <i class=\"material-icons prefix\">textsms</i>
+                            <input type=\"text\" id=\"categoria-input\" name='categoria' value='" . urldecode($categoria) . "'>
+                            <label for=\"categoria-input\">Caso deseje, altere a <a href='http://www.wikicfp.com/cfp/allcat'>categoria</a> buscada e pressione <kbd>Enter</kbd> (se não for literalmente uma das  <a href='http://www.wikicfp.com/cfp/allcat'>categorias permitidas</a>, a busca provavelmente não trará resultados):</label>
+                        </div>
+                    </div>
+                </div>
+            </form>";
+    }
+    return $retorno.
+            "<br>" .
             str_replace('<a href="/cfp/servlet/', '<a href="http://www.wikicfp.com/cfp/servlet/',
                 str_replace('src="/cfp/images/new.gif"', "src='http://www.wikicfp.com/cfp/images/new.gif'",
                     $tableHtmlAsString
@@ -101,8 +132,9 @@ function obterWiki($url) {
     table > tbody > tr > td:nth-child(5) { width: 22%; }
 </style>
 
-<?= obterWiki('http://www.wikicfp.com/cfp/call?conference=data%20mining') ?>
-<?= obterWiki('http://www.wikicfp.com/cfp/call?conference=data%20mining&page=2') ?>
+<?= obterWiki('http://www.wikicfp.com/cfp/call?conference='.$categoria, true) ?>
+<?= obterWiki('http://www.wikicfp.com/cfp/call?conference='.$categoria.'&page=2', false) ?>
+<?= obterWiki('http://www.wikicfp.com/cfp/call?conference='.$categoria.'&page=3', false) ?>
 
 <script>
     $(document).ready(function() {
