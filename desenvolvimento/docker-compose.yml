@@ -12,3 +12,11 @@ services:
         MYSQL_ROOT_PASSWORD: pass
     volumes:
         - ./ddl:/docker-entrypoint-initdb.d
+    networks:
+        default:
+            aliases:
+                - db
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin"
+    ports:
+     - "81:80"
