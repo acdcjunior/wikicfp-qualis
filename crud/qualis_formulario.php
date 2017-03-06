@@ -79,7 +79,7 @@ function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $metadados, $row
                        href='qualis_list.php'><i class="material-icons right">undo</i>Voltar para listagem</a>
                 </div>
 
-                <input type="text" name='metadados' id="input-metadados">
+                <input type="hidden" name='metadados' id="input-metadados">
             </form>
         </div>
     </div>
