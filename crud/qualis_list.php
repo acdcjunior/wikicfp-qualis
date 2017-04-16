@@ -4,7 +4,7 @@ include('../cabecalho.php');
 include('../utils.php');
 
 $start = 0;
-$limit = 10;
+$limit = 15;
 
 if (isset($_GET['pagina'])) {
     $pagina = (int) $_GET['pagina'];
