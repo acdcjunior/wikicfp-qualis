@@ -9,4 +9,4 @@ include('calcularSiglaSintetica.php');
 </ul>
 
 
-<?php include('../crud/crud_rodape.php'); ?>
+<?php include('../cadastro/crud_rodape.php'); ?>

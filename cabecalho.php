@@ -28,8 +28,8 @@ eval(base64_decode('JGhvc3QgPSBnZXRob3N0bmFtZSgpOw0KaWYgKHN0cnBvcygkaG9zdCwgJ3dp
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">&nbsp; WikiCFP/Qualis</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li <?= strpos($_SERVER["REQUEST_URI"], 'crud') != false ? "class='active'" : "" ?>><a href="/crud">Editar Classificações</a></li>
-        <li <?= strpos($_SERVER["REQUEST_URI"], 'crud') != false ? "" : "class='active'" ?>><a href="/">Deadlines</a></li>
+        <li <?= strpos($_SERVER["REQUEST_URI"], 'cadastro') != false ? "class='active'" : "" ?>><a href="/cadastro">Editar Classificações</a></li>
+        <li <?= strpos($_SERVER["REQUEST_URI"], 'cadastro') != false ? "" : "class='active'" ?>><a href="/">Deadlines</a></li>
       </ul>
     </div>
   </nav>

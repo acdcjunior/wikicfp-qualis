@@ -38,4 +38,4 @@ Gerando siglas efetivas para eventos sem siglas cadastradas...
 Executadas <?= $i?> alterações.
 <br>
 
-<?php include('../crud/crud_rodape.php'); ?>
+<?php include('../cadastro/crud_rodape.php'); ?>
