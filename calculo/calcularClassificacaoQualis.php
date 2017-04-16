@@ -1,5 +1,7 @@
 <?php
 
+// mysqli_report(MYSQLI_REPORT_ERROR);
+
 include('calcularSiglaSintetica.php');
 
 /*
@@ -95,16 +97,42 @@ function calcularBySiglaEfetivaETitulo($siglaDoEventoSemAno, $tituloDoEventoSemA
 function reportarMultiplosResultados($todosResultados, $mensagem) {
     $multiplosResultadosConcatenados = "";
     $numeroResultados = sizeof($todosResultados);
+
+    $minQualis = $todosResultados[0]['qualis'];
+    $maxQualis = $todosResultados[0]['qualis'];
+
     for ($i = 0; $i < $numeroResultados; $i++) {
         $multiplosResultadosConcatenados .= formatarResultado($todosResultados[$i]);
+        $minQualis = minQualis($minQualis, $todosResultados[$i]['qualis']);
+        $maxQualis = maxQualis($maxQualis, $todosResultados[$i]['qualis']);
     }
-    return resultado("Várias*", $mensagem . $multiplosResultadosConcatenados);
+    $qualis = "* $minQualis...$maxQualis";
+    if ($minQualis === $maxQualis) {
+        $qualis = "* $minQualis";
+    }
+    return resultado($qualis, $mensagem . $multiplosResultadosConcatenados);
 }
 function formatarResultado($linhaQualis) {
     return "<hr>Sigla: " . $linhaQualis['sigla_efetiva'] .
            "<br>Qualis: " . $linhaQualis['qualis'] .
            "<br>Título: " . $linhaQualis['titulo'] .
            "<hr>";
+}
+function minQualis($qualis1, $qualis2) {
+    // em termos ordinais, 'C' é maior do que 'B5' e assim vai...
+    if ($qualis1 > $qualis2) {
+        return $qualis1;
+    } else {
+        return $qualis2;
+    }
+}
+function maxQualis($qualis1, $qualis2) {
+    // em termos ordinais, 'C' é maior do que 'B5' e assim vai...
+    if ($qualis1 < $qualis2) {
+        return $qualis1;
+    } else {
+        return $qualis2;
+    }
 }
 
 
@@ -142,7 +170,7 @@ function getBySiglaEfetivaETitulo($sigla, $titulo) {
 function goSQL($sql) {
     global $db;
     $data = array();
-    
+
     $query = $db->query($sql);
 
     while($row = $query->fetch_array(MYSQLI_ASSOC)) {
