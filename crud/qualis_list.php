@@ -76,8 +76,6 @@ if (isset($_GET['filtro'])) {
             WHERE `sigla` LIKE '%".$db->real_escape_string($filtro)."%'
             OR `sigla_efetiva` LIKE '%".$db->real_escape_string($filtro)."%'
             OR `titulo` LIKE '%".$db->real_escape_string($filtro)."%'
-            OR `fonte` LIKE '%".$db->real_escape_string($filtro)."%'
-            OR `metadados` LIKE '%".$db->real_escape_string($filtro)."%'
         ";
     }
     $sql = "
