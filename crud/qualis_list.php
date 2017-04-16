@@ -17,9 +17,28 @@ if (!isset($pagina) || $pagina < 1) {
     $pagina = 1;
 }
 
+if (isset($_GET['filtro'])) {
+    $filtro = trim($_GET['filtro']);
+} else {
+    $filtro = '';
+}
+
 ?>
 
 <h3>Classificações Qualis Cadastradas</h3>
+
+<form action='' method='GET' class="row">
+    <div class="col s12">
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">textsms</i>
+                <input type="text" id="filtro-input" name='filtro' value='<?=$filtro?>'>
+                <label for="filtro-input">Para buscar dentre as classificações cadastradas, digite aqui o termo e pressione <kbd>Enter</kbd></label>
+            </div>
+        </div>
+    </div>
+</form>
+
 <table class="bordered striped centered responsive-table">
     <thead>
     <tr>
@@ -51,8 +70,25 @@ if (!isset($pagina) || $pagina < 1) {
         return " class='tooltipped' data-delay='10' data-tooltip='".nl2br($valorCampo)."'>" . (strlen($valorCampo) > $tamanhoMax ? substr($valorCampo, 0, $tamanhoMax)."..." : $valorCampo);
     }
 
-
-    $query = $db->query("SELECT `id`, `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, `metadados` FROM `qualis` order by titulo, sigla LIMIT $start, $limit");
+    $clausulaWhere = '';
+    if ($filtro !== '') {
+        $clausulaWhere = "
+            WHERE `sigla` LIKE '%".$db->real_escape_string($filtro)."%'
+            OR `sigla_efetiva` LIKE '%".$db->real_escape_string($filtro)."%'
+            OR `titulo` LIKE '%".$db->real_escape_string($filtro)."%'
+            OR `fonte` LIKE '%".$db->real_escape_string($filtro)."%'
+            OR `metadados` LIKE '%".$db->real_escape_string($filtro)."%'
+        ";
+    }
+    $sql = "
+        SELECT `id`, `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, `metadados`
+        FROM `qualis`
+        $clausulaWhere
+        ORDER BY titulo, sigla
+        LIMIT $start, $limit
+    ";
+    $query = $db->query($sql);
+    $totalRegistrosTrazidos = $query->num_rows;
     while($row = $query->fetch_array(MYSQLI_ASSOC)) { 
         foreach($row AS $key => $value) { if ($key !== 'metadados') $row[$key] = stripslashes($value); }
         echo "<tr>";  
@@ -127,7 +163,7 @@ if (!isset($pagina) || $pagina < 1) {
                 </ul>
             </div>
             <div class="col s6" style="padding-top: 20px">
-                Total de <?= $rows ?> registros na base.
+                Trazidos <?= $totalRegistrosTrazidos ?> registros, de um total de <?= $rows ?> na base.
             </div>
         </div>
     </div>
