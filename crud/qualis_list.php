@@ -82,12 +82,14 @@ if (isset($_GET['filtro'])) {
         SELECT `id`, `sigla`, `sigla_efetiva`, `titulo`, `qualis`, `fonte`, `metadados`
         FROM `qualis`
         $clausulaWhere
+    ";
+    $totalRegistrosEncontrados = $db->query($sql)->num_rows;
+    $orderLimit = "
         ORDER BY titulo, sigla
         LIMIT $start, $limit
     ";
-    $query = $db->query($sql);
-    $totalRegistrosTrazidos = $query->num_rows;
-    while($row = $query->fetch_array(MYSQLI_ASSOC)) { 
+    $query = $db->query($sql.$orderLimit);
+    while($row = $query->fetch_array(MYSQLI_ASSOC)) {
         foreach($row AS $key => $value) { if ($key !== 'metadados') $row[$key] = stripslashes($value); }
         echo "<tr>";  
         echo "<td valign='top' class='tooltipped' data-delay='1000' data-tooltip='Id desta linha no banco: ".$row['id']."'>" . nl2br( $row['titulo']) . "</td>";
@@ -161,7 +163,13 @@ if (isset($_GET['filtro'])) {
                 </ul>
             </div>
             <div class="col s6" style="padding-top: 20px">
-                Trazidos <?= $totalRegistrosTrazidos ?> registros, de um total de <?= $rows ?> na base.
+                <?php
+                if ($filtro === '') {
+                    echo "Total de $rows na base. Nenhum filtro foi aplicado.";
+                } else {
+                    echo "Filtrados $totalRegistrosEncontrados registros, de um total de $rows na base.";
+                }
+                ?>
             </div>
         </div>
     </div>
