@@ -11,6 +11,6 @@ if ($db->query("DELETE FROM `qualis` WHERE `id` = '$id' ") === TRUE) {
 
 ?> 
 
-<a href='qualis_list.php'>Voltar para listagem.</a>
+<a href='.'>Voltar para listagem.</a>
 
 <?php include('crud_rodape.php'); ?>

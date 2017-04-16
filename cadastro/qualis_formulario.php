@@ -76,7 +76,7 @@ function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $metadados, $row
                         <i class="material-icons right">send</i>
                     </button>
                     <a class="btn waves-effect waves-light grey lighten-5" style='color: black'
-                       href='qualis_list.php'><i class="material-icons right">undo</i>Voltar para listagem</a>
+                       href='.'><i class="material-icons right">undo</i>Voltar para listagem</a>
                 </div>
 
                 <input type="hidden" name='metadados' id="input-metadados">

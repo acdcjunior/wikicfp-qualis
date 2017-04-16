@@ -35,9 +35,12 @@ if (isset($_POST['submitted'])) {
     echo "
         <h2>Linha adicionada com sucesso.</h2>
         <br>
-        <a href='qualis_edit.php?id=".$db->insert_id."'>Clique aqui para continuar a edição do item inserido (e adicionar outros metadados).</a>
+            <ul class='browser-default'>
+                <li><a href='qualis_edit.php?id=".$db->insert_id."'>Clique aqui para continuar a edição do item inserido (e adicionar outros metadados).</a></li>
+                <li><a href='.'>Clique aqui para voltar para a listagem.</a></li>
+            </ul>
         <br>
-        <a href='qualis_list.php'>Clique aqui para voltar para a listagem.</a>";
+        ";
   } else {
     echo "Erro: " . $sql . "<br>" . $db->error;
   }
