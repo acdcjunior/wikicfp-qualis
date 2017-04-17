@@ -139,8 +139,13 @@ function qualisFormulario($tituloFormulario, $labelBotaoEnviar, $metadados, $row
 
         $("#botao-novo-metadado").click(function () {
             var nomeDoNovoMetadado = prompt("Qual o nome do novo metadado?");
-            window.metadados[nomeDoNovoMetadado] = '';
-            pintar();
+            if (nomeDoNovoMetadado !== null) {
+                nomeDoNovoMetadado = nomeDoNovoMetadado.trim();
+                if (nomeDoNovoMetadado.length > 0) {
+                    window.metadados[nomeDoNovoMetadado] = '';
+                    pintar();
+                }
+            }
         });
 
         $("#btnSubmit").click(atualizarInputMetadados);
