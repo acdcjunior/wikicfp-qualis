@@ -9,6 +9,12 @@ eval(base64_decode('JGhvc3QgPSBnZXRob3N0bmFtZSgpOw0KaWYgKHN0cnBvcygkaG9zdCwgJ3dp
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Conferências WikiCFP incluindo Classificações Qualis">
+  <meta name="keywords" content="Qualis,Conferencias">
+  <meta name="author" content="https://github.com/acdcjunior/wikicfp-qualis">
+
+  <title>WikiCFP + Qualis</title>
   
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
