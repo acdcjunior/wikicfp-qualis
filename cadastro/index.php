@@ -139,8 +139,8 @@ if (isset($_GET['filtro'])) {
 </table>
 <br>
 <?php
-    $rows = $db->query("SELECT 1 FROM `qualis`")->num_rows;
-    $total = ceil($rows/$limit);
+    $totalRegistrosNaBase = $db->query("SELECT 1 FROM `qualis`")->num_rows;
+    $total = ceil($totalRegistrosEncontrados/$limit);
 ?>
     <div class="container">
         <div class="row">
@@ -165,9 +165,9 @@ if (isset($_GET['filtro'])) {
             <div class="col s6" style="padding-top: 20px">
                 <?php
                 if ($filtro === '') {
-                    echo "Total de $rows na base. Nenhum filtro foi aplicado.";
+                    echo "Total de $totalRegistrosNaBase na base. Nenhum filtro foi aplicado.";
                 } else {
-                    echo "Filtrados $totalRegistrosEncontrados registros, de um total de $rows na base.";
+                    echo "Filtrados $totalRegistrosEncontrados registros, de um total de $totalRegistrosNaBase na base.";
                 }
                 ?>
             </div>
