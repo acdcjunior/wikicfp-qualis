@@ -148,14 +148,14 @@ if (isset($_GET['filtro'])) {
                 <ul class="pagination">
                     <?php
                         if ($pagina > 1) {
-                            echo "<li class='waves-effect'><a href='?pagina=".($pagina-1)."'><i class='material-icons'>chevron_left</i></a></li>";
+                            echo "<li class='waves-effect'><a href='?pagina=".($pagina-1)."&filtro=".$filtro."'><i class='material-icons'>chevron_left</i></a></li>";
                         } else {
                             echo "<li class='disabled'><a href='#!'><i class='material-icons'>chevron_left</i></a></li>";
                         }
                         echo "<li class='active'><a href='#!'>$pagina</a></li>";
                         
                         if ($pagina != $total) {
-                            echo "<li class='waves-effect'><a href='?pagina=".($pagina+1)."'><i class='material-icons'>chevron_right</i></a></li>";
+                            echo "<li class='waves-effect'><a href='?pagina=".($pagina+1)."&filtro=".$filtro."'><i class='material-icons'>chevron_right</i></a></li>";
                         } else {
                             echo "<li class='disabled'><a href='#!'><i class='material-icons'>chevron_right</i></a></li>";
                         }
